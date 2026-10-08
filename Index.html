@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mannu Art Store</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    margin:0;
+    background:#f5f5f5;
+    color:#222;
+}
+
+header{
+    background:#111;
+    color:white;
+    padding:18px;
+    text-align:center;
+}
+
+header h1{
+    margin:0 0 5px;
+}
+
+header p{
+    margin:0;
+}
+
+.cartTop{
+    position:fixed;
+    top:15px;
+    right:15px;
+    z-index:5000;
+}
+
+.cartIcon{
+    background:white;
+    color:#111;
+    padding:10px 14px;
+    border-radius:25px;
+    font-weight:bold;
+    box-shadow:0 3px 10px rgba(0,0,0,.25);
+}
+
+.container{
+    width:92%;
+    max-width:1000px;
+    margin:auto;
+}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:25px;
+}
+
+.product{
+    background:white;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,.12);
+    text-align:center;
+}
+
+.product img{
+    width:100%;
+    height:250px;
+    object-fit:cover;
+    border-radius:10px;
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-user-drag:none;
+}
+
+.product h3{
+    margin:12px 0 5px;
+}
+
+.price{
+    font-size:20px;
+    font-weight:bold;
+    margin:8px;
+}
+
+button{
+    background:#111;
+    color:white;
+    border:0;
+    padding:12px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    margin:5px;
+    font-size:14px;
+}
+
+button:hover{
+    opacity:.85;
+}
+
+.added{
+    background:#198754 !important;
+}
+
+.cart{
+    background:white;
+    margin-top:30px;
+    padding:20px;
+    border-radius:12px;
+}
+
+.cartItem{
+    border-bottom:1px solid #ddd;
+    padding:10px 0;
+}
+
+.checkout{
+    background:white;
+    margin-top:20px;
+    padding:20px;
+    border-radius:12px;
+}
+
+input,textarea{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:7px;
+}
+
+.payment-box{
+    margin-top:15px;
+    padding:15px;
+    background:#f5f5f5;
+    border-radius:10px;
+}
+
+.payment-box input{
+    width:auto;
+}
+
+.qr{
+    max-width:220px;
+    width:100%;
+    display:block;
+    margin:15px auto;
+    border-radius:10px;
+}
+
+#cartNotification{
+    position:fixed;
+    bottom:25px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#198754;
+    color:white;
+    padding:13px 20px;
+    border-radius:25px;
+    display:none;
+    z-index:10000;
+    box-shadow:0 4px 15px rgba(0,0,0,.3);
+    font-weight:bold;
+}
+
+#imageViewer{
+    display:none;
+    position:fixed;
+    z-index:9999;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.96);
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+
+#fullImage{
+    max-width:95%;
+    max-height:85%;
+    object-fit:contain;
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-user-drag:none;
+}
+
+#closeViewer{
+    position:absolute;
+    top:15px;
+    right:20px;
+    color:white;
+    font-size:35px;
+    cursor:pointer;
+}
+
+.viewerText{
+    color:white;
+    font-size:13px;
+    margin-top:10px;
+    opacity:.7;
+}
+
+.deliveryBox{
+    background:#f5f5f5;
+    padding:12px;
+    border-radius:8px;
+    margin-top:10px;
+}
+
+.finalTotal{
+    font-size:22px;
+}
+
+</style>
+</head>
+
+
+<body
+oncontextmenu="return false"
+ondragstart="return false"
+onselectstart="return false"
+>
+
+
+<header>
+
+<h1>🎨 Mannu Art Store</h1>
+
+<p>Handmade Sketches & Drawings</p>
+
+</header>
+
+
+<div class="cartTop">
+
+<div class="cartIcon">
+
+🛒 Cart:
+<span id="cartCount">0</span>
+
+</div>
+
+</div>
+
+
+<div class="container">
+
+
+<div class="products">
+
+
+<!-- PRODUCT 1 -->
+
+<div class="product">
+
+<img
+src="sketch1.jpg"
+alt="Handmade Portrait Sketch"
+onclick="openImage(this.src)"
+oncontextmenu="return false"
+draggable="false"
+>
+
+<h3>Handmade Portrait Sketch</h3>
+
+<div class="price">₹299</div>
+
+<button
+id="btn1"
+onclick="addToCart('Handmade Portrait Sketch',299,'btn1')"
+>
+
+🛒 Add to Cart
+
+</button>
+
+</div>
+
+
+<!-- PRODUCT 2 -->
+
+<div class="product">
+
+<img
+src="sketch2.jpg"
+alt="Handmade Drawing"
+onclick="openImage(this.src)"
+oncontextmenu="return false"
+draggable="false"
+>
+
+<h3>Handmade Drawing</h3>
+
+<div class="price">₹299</div>
+
+<button
+id="btn2"
+onclick="addToCart('Handmade Drawing',299,'btn2')"
+>
+
+🛒 Add to Cart
+
+</button>
+
+</div>
+
+
+<!-- PRODUCT 3 -->
+
+<div class="product">
+
+<img
+src="sketch3.jpg"
+alt="Premium Sketch"
+onclick="openImage(this.src)"
+oncontextmenu="return false"
+draggable="false"
+>
+
+<h3>Premium Sketch</h3>
+
+<div class="price">₹299</div>
+
+<button
+id="btn3"
+onclick="addToCart('Premium Sketch',299,'btn3')"
+>
+
+🛒 Add to Cart
+
+</button>
+
+</div>
+
+
+</div>
+
+
+<!-- CART -->
+
+<div class="cart">
+
+<h2>🛒 Your Cart</h2>
+
+<div id="cartItems">
+
+Cart is empty
+
+</div>
+
+
+<div class="deliveryBox">
+
+<p>
+🛍️ Product Total:
+₹<span id="total">0</span>
+</p>
+
+<p>
+🚚 Delivery:
+₹<span id="delivery">0</span>
+</p>
+
+<h3 class="finalTotal">
+
+💰 Final Total:
+₹<span id="finalTotal">0</span>
+
+</h3>
+
+</div>
+
+</div>
+
+
+<!-- CHECKOUT -->
+
+<div class="checkout">
+
+<h2>📦 Checkout</h2>
+
+
+<input
+type="text"
+id="name"
+placeholder="Full Name"
+>
+
+
+<input
+type="tel"
+id="mobile"
+placeholder="Mobile Number"
+>
+
+
+<textarea
+id="address"
+placeholder="Full Address"
+></textarea>
+
+
+<input
+type="text"
+id="pincode"
+placeholder="PIN Code"
+>
+
+
+<input
+type="text"
+id="state"
+placeholder="State"
+>
+
+
+<!-- PAYMENT -->
+
+<div class="payment-box">
+
+<h3>Payment Method</h3>
+
+
+<label>
+
+<input
+type="radio"
+name="payment"
+value="Online Payment"
+onclick="showPayment()"
+>
+
+Online Payment
+
+</label>
+
+
+<br><br>
+
+
+<label>
+
+<input
+type="radio"
+name="payment"
+value="COD"
+onclick="hidePayment()"
+>
+
+Cash on Delivery
+
+</label>
+
+
+<div
+id="onlinePayment"
+style="display:none;"
+>
+
+<hr>
+
+<h3>💳 Pay with PhonePe / UPI</h3>
+
+
+<button onclick="payUPI()">
+
+Pay with UPI App
+
+</button>
+
+
+<p>
+
+<b>UPI ID:</b>
+8708250402@ybl
+
+</p>
+
+
+<h4>Or Scan QR Code</h4>
+
+
+<img
+src="phonepe-qr.jpg"
+class="qr"
+alt="PhonePe QR Code"
+oncontextmenu="return false"
+draggable="false"
+>
+
+
+</div>
+
+</div>
+
+
+<button onclick="placeOrder(event)">
+
+📲 Place Order on WhatsApp
+
+</button>
+
+
+</div>
+
+</div>
+
+
+<!-- NOTIFICATION -->
+
+<div id="cartNotification">
+
+✓ Added to Cart!
+
+</div>
+
+
+<!-- FULL SCREEN IMAGE -->
+
+<div
+id="imageViewer"
+onclick="closeImage()"
+>
+
+<span
+id="closeViewer"
+onclick="closeImage()"
+>
+
+×
+</span>
+
+
+<img
+id="fullImage"
+onclick="event.stopPropagation()"
+oncontextmenu="return false"
+draggable="false"
+>
+
+
+<div class="viewerText">
+
+Tap outside the image to close
+
+</div>
+
+</div>
+
+
+<script>
+
+
+let cart=[];
+
+let total=0;
+
+
+/* DELIVERY CHARGE */
+
+const DELIVERY_CHARGE=100;
+
+
+/* ADD TO CART */
+
+function addToCart(name,price,buttonID){
+
+    cart.push({
+        name:name,
+        price:price
+    });
+
+    total += price;
+
+    updateCart();
+
+
+    let button=document.getElementById(buttonID);
+
+    button.innerHTML="✓ Added to Cart";
+
+    button.classList.add("added");
+
+
+    let notification=
+    document.getElementById("cartNotification");
+
+    notification.innerHTML=
+    "✓ "+name+" added to cart!";
+
+    notification.style.display="block";
+
+
+    setTimeout(function(){
+
+        notification.style.display="none";
+
+    },2000);
+
+
+    document.getElementById("cartCount").innerText=
+    cart.length;
+
+
+    setTimeout(function(){
+
+        button.innerHTML="🛒 Add to Cart";
+
+        button.classList.remove("added");
+
+    },2000);
+
+}
+
+
+/* UPDATE CART */
+
+function updateCart(){
+
+    let cartItems=
+    document.getElementById("cartItems");
+
+
+    if(cart.length===0){
+
+        cartItems.innerHTML=
+        "Cart is empty";
+
+    }
+
+    else{
+
+        cartItems.innerHTML="";
+
+
+        cart.forEach(function(item,index){
+
+            cartItems.innerHTML +=
+
+            '<div class="cartItem">'+
+
+            '<b>'+item.name+'</b>'+
+
+            ' - ₹'+item.price+
+
+            '<br>'+
+
+            '<button onclick="removeItem('+index+')">'+
+
+            'Remove'+
+
+            '</button>'+
+
+            '</div>';
+
+        });
+
+    }
+
+
+    let delivery=
+    cart.length>0 ? DELIVERY_CHARGE : 0;
+
+
+    let finalTotal=
+    total+delivery;
+
+
+    document.getElementById("total").innerText=
+    total;
+
+
+    document.getElementById("delivery").innerText=
+    delivery;
+
+
+    document.getElementById("finalTotal").innerText=
+    finalTotal;
+
+
+    document.getElementById("cartCount").innerText=
+    cart.length;
+
+}
+
+
+/* REMOVE ITEM */
+
+function removeItem(index){
+
+    total -= cart[index].price;
+
+    cart.splice(index,1);
+
+    updateCart();
+
+}
+
+
+/* FULL SCREEN IMAGE */
+
+function openImage(src){
+
+    let viewer=
+    document.getElementById("imageViewer");
+
+    let image=
+    document.getElementById("fullImage");
+
+
+    image.src=src;
+
+    viewer.style.display="flex";
+
+    document.body.style.overflow="hidden";
+
+}
+
+
+/* CLOSE IMAGE */
+
+function closeImage(){
+
+    document.getElementById("imageViewer").style.display="none";
+
+    document.body.style.overflow="auto";
+
+}
+
+
+/* PAYMENT */
+
+function showPayment(){
+
+    document.getElementById("onlinePayment").style.display="block";
+
+}
+
+
+function hidePayment(){
+
+    document.getElementById("onlinePayment").style.display="none";
+
+}
+
+
+/* UPI PAYMENT */
+
+function payUPI(){
+
+    if(total<=0){
+
+        alert("Please add a product to cart first.");
+
+        return;
+
+    }
+
+
+    let delivery=
+    DELIVERY_CHARGE;
+
+
+    let amount=
+    (total+delivery).toFixed(2);
+
+
+    let upiID=
+    "8708250402@ybl";
+
+
+    let merchantName=
+    "Mannu Art Store";
+
+
+    let upiURL=
+
+    "upi://pay"+
+
+    "?pa="+
+    encodeURIComponent(upiID)+
+
+    "&pn="+
+    encodeURIComponent(merchantName)+
+
+    "&am="+
+    amount+
+
+    "&cu=INR";
+
+
+    window.location.href=
+    upiURL;
+
+}
+
+
+/* WHATSAPP ORDER */
+
+function placeOrder(event){
+
+    event.preventDefault();
+
+
+    if(cart.length===0){
+
+        alert("Please add a product to cart first.");
+
+        return;
+
+    }
+
+
+    let name=
+    document.getElementById("name").value;
+
+
+    let mobile=
+    document.getElementById("mobile").value;
+
+
+    let address=
+    document.getElementById("address").value;
+
+
+    let pincode=
+    document.getElementById("pincode").value;
+
+
+    let state=
+    document.getElementById("state").value;
+
+
+    let payment=
+    document.querySelector(
+    'input[name="payment"]:checked'
+    );
+
+
+    if(
+        !name ||
+        !mobile ||
+        !address ||
+        !pincode ||
+        !state
+    ){
+
+        alert("Please fill all details.");
+
+        return;
+
+    }
+
+
+    if(!payment){
+
+        alert("Please select a payment method.");
+
+        return;
+
+    }
+
+
+    let delivery=
+    DELIVERY_CHARGE;
+
+
+    let finalTotal=
+    total+delivery;
+
+
+    let message=
+    "🛍️ New Order - Mannu Art Store\n\n";
+
+
+    message+=
+    "👤 Name: "+name+"\n";
+
+
+    message+=
+    "📱 Mobile: "+mobile+"\n";
+
+
+    message+=
+    "🏠 Address: "+address+"\n";
+
+
+    message+=
+    "📮 PIN: "+pincode+"\n";
+
+
+    message+=
+    "📍 State: "+state+"\n\n";
+
+
+    message+=
+    "🛒 Products:\n";
+
+
+    cart.forEach(function(item){
+
+        message+=
+        "• "+item.name+
+        " - ₹"+item.price+"\n";
+
+    });
+
+
+    message+=
+    "\n🛍️ Product Total: ₹"+total;
+
+
+    message+=
+    "\n🚚 Delivery: ₹"+delivery;
+
+
+    message+=
+    "\n💰 Final Total: ₹"+finalTotal;
+
+
+    message+=
+    "\n💳 Payment: "+payment.value;
+
+
+    let whatsappURL=
+
+    "https://wa.me/918708250402?text="+
+
+    encodeURIComponent(message);
+
+
+    window.open(
+        whatsappURL,
+        "_blank"
+    );
+
+}
+
+
+/* IMAGE PROTECTION */
+
+document.addEventListener(
+"contextmenu",
+function(e){
+
+    if(e.target.tagName==="IMG"){
+
+        e.preventDefault();
+
+    }
+
+},
+false
+);
+
+
+document.addEventListener(
+"dragstart",
+function(e){
+
+    if(e.target.tagName==="IMG"){
+
+        e.preventDefault();
+
+    }
+
+},
+false
+);
+
+
+/* ESC CLOSE */
+
+document.addEventListener(
+"keydown",
+function(e){
+
+    if(e.key==="Escape"){
+
+        closeImage();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
